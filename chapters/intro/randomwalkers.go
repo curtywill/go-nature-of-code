@@ -72,3 +72,24 @@ func GaussianWalker() {
 		walker.Add(x, y)
 	}
 }
+
+func NoiseWalker() {
+	walker := structs.NewVector(w/2, h/2)
+	dc := gg.NewContext(w, h)
+	dc.SetRGB(1, 1, 1)
+	dc.Clear()
+	x, y := 0.0, 0.0
+	perlin := processingutils.NewPerlinNoiseGenerator()
+	for i := 0; i < 150; i++ {
+		dc.DrawCircle(walker.X, walker.Y, 5)
+		dc.SetRGB(0, 0, 0)
+		dc.Fill()
+		dc.SavePNG(fmt.Sprintf("out/frame%03d.png", i))
+		dc.SetRGB(1, 1, 1)
+		dc.Clear()
+		x += 0.01
+		y += 0.01
+		perlin.Noise(x, y)
+		walker.Add(x, y)
+	}
+}
