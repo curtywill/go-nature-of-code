@@ -6,6 +6,6 @@ IF [%1] == [] (
 )
 
 SET filename=%1
-SET gifcommand=ffmpeg -f image2 -framerate 15 -i frames/frame%%3d.png gifs/%filename%.gif
+SET gifcommand=ffmpeg -f image2 -framerate 30 -i frames/frame%%3d.png out/%filename%.gif
 %gifcommand%
-DEL %cd%\out\*.png
+DEL %cd%\frames\*.png

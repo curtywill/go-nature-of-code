@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	w = 600
-	h = 400
+	w = 200
+	h = 200
 )
 
 func BiasedWalker() {
