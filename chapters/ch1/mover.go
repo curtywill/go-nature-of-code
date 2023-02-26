@@ -1,41 +1,37 @@
 package ch1
 
 import (
+	"fmt"
+	"math/rand"
 	"nature-of-code/constants"
 	"nature-of-code/structs"
 
 	"github.com/fogleman/gg"
 )
 
-type Mover struct {
-	position     *structs.Vector
-	velocity     *structs.Vector
-	acceleration *structs.Vector
-	maxspeed     int
+// created mover0 through mover2 gifs
+var m *structs.Ch1Mover
+var dc *gg.Context
+var x, y float64
+
+func Setup() {
+	m = structs.NewCh1Mover(constants.W/2, constants.H/2)
+	dc = gg.NewContext(constants.W, constants.H)
 }
 
-func NewMover() *Mover {
-	position := structs.NewVector(constants.W/2, constants.H/2)
-	velocity := structs.ZeroVector()
-	return &Mover{position: position, velocity: velocity, maxspeed: 4}
+func loop(frameCount int) {
+	if frameCount%(3*constants.FPS) == 0 {
+		x, y = rand.Float64()*constants.W, rand.Float64()*constants.H
+	}
+	dc.SetRGB(0, 0, 0)
+	dc.Clear()
+	m.Update(x, y)
+	m.Show(dc)
+	dc.SavePNG(fmt.Sprintf("frames/frame%03d.png", frameCount))
 }
 
-// (x, y) is point of attraction
-func (m *Mover) Update(x, y float64) {
-	point := structs.NewVector(x, y)
-	dir := structs.Sub(*point, *m.position)
-
-	dir.Normalize()
-	dir.Scale(0.5)
-
-	m.acceleration = dir
-	m.velocity.VAdd(*m.acceleration)
-	m.velocity.Limit(float64(m.maxspeed))
-	m.position.VAdd(*m.velocity)
-}
-
-func (m Mover) Show(ctx *gg.Context) {
-	ctx.SetRGB(1, 1, 1)
-	ctx.DrawCircle(m.position.X, m.position.Y, 8)
-	ctx.Fill()
+func Draw() {
+	for i := 0; i < constants.FPS*constants.SECS; i++ {
+		loop(i)
+	}
 }

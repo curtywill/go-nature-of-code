@@ -8,7 +8,7 @@ import (
 )
 
 func TestZeroVector(t *testing.T) {
-	v := NewVector(0, 0)
+	v := ZeroVector()
 	if v.X != 0 || v.Y != 0 {
 		t.Fatal("Zero vector should be (0, 0)")
 	}
@@ -29,4 +29,10 @@ func TestVectorLimit(t *testing.T) {
 	v := NewVector(10, 20)
 	v.Limit(10)
 	t.Log(v.Mag())
+}
+
+func TestVectorScale(t *testing.T) {
+	v := NewVector(1, 1)
+	v.Scale(5)
+	t.Log(v)
 }
